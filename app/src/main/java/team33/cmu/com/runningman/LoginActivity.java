@@ -80,6 +80,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             @Override
             public void onClick(View view) {
                 attemptLogin();
+                Intent intent = new Intent(LoginActivity.this, HomeViewActivity.class);
+                startActivity(intent);
                 finish();
             }
         });
