@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import android.content.Intent;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,11 +54,11 @@ public class HomeViewActivity extends AppCompatActivity {
                                     long arg3) {
                 String value = adapter.getItemAtPosition(position).toString();
                 Log.i("[jump]",value);
-//                Intent intent = new Intent();
-//                //intent.setClass(this, SummaryActivity.class); //set to Hongyi's activity
-//                intent.putExtra("position", position);
-//                intent.putExtra("value", value);
-//                startActivity(intent);
+                Intent intent = new Intent();
+                intent.setClass(HomeViewActivity.this, SummaryActivity.class); //set to Hongyi's activity
+                intent.putExtra("position", position);
+                intent.putExtra("value", value);
+                startActivity(intent);
             }
         });
 
@@ -86,11 +88,11 @@ public class HomeViewActivity extends AppCompatActivity {
             public void onClick(View arg0) {
                 Log.i("[jump]","start Run!");
 
-                // Start RunningActivity.class
-//                Intent myIntent = new Intent(this,
-//                        RunningActivity.class);
-//
-//                startActivity(myIntent);
+//                 Start RunningActivity.class
+                Intent myIntent = new Intent(HomeViewActivity.this,
+                        RunningActivity.class);
+
+                startActivity(myIntent);
 
 
             }

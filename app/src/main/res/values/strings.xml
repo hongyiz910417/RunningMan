@@ -16,4 +16,5 @@
     <string name="action_choose_photo">Upload a photo</string>
     <string name="action_take_photo">Take a photo</string>
 
+    <string name="title_activity_summary">Summary</string>
 </resources>
