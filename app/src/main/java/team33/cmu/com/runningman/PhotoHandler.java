@@ -25,7 +25,6 @@ public class PhotoHandler implements PictureCallback {
         this.context = context;
     }
 
-
     @Override
     public void onPictureTaken(byte[] data, Camera camera) {
 
@@ -67,4 +66,5 @@ public class PhotoHandler implements PictureCallback {
                 .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         return new File(sdDir, "CameraAPIDemo");
     }
+
 }
