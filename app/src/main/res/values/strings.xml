@@ -17,4 +17,6 @@
     <string name="action_take_photo">Take a photo</string>
 
     <string name="title_activity_summary">Summary</string>
+    <string name="prompt_username">Username</string>
+    <string name="error_invalid_Username">Not valid username</string>
 </resources>

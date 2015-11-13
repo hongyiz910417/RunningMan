@@ -1,5 +1,7 @@
 package team33.cmu.com.runningman;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,14 +20,13 @@ public class HomeViewActivity extends AppCompatActivity {
 
     private ListView myRunList;
     private ListView topRunnersList;
+    private String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_view);
-
         myRunList = (ListView) findViewById(R.id.myRunsList);
-
         List<String> myRuns = new ArrayList<>();
 
         //populate list from DB in final version
@@ -91,10 +92,7 @@ public class HomeViewActivity extends AppCompatActivity {
 //                 Start RunningActivity.class
                 Intent myIntent = new Intent(HomeViewActivity.this,
                         RunningActivity.class);
-
                 startActivity(myIntent);
-
-
             }
         });
 
