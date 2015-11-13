@@ -5,7 +5,7 @@ import team33.cmu.com.runningman.entities.Summary;
 /**
  * Created by d on 11/13/15.
  */
-public class DBManager {
+public class SummaryDBManager {
     public void insertSummary(Summary summary){
         // TODO: 11/13/15  
     }
