@@ -1,4 +1,4 @@
-package team33.cmu.com.runningman;
+package team33.cmu.com.runningman.ui.activities;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -11,6 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import team33.cmu.com.runningman.R;
 
 public class RegisterActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package team33.cmu.com.runningman;
+package team33.cmu.com.runningman.ui.intents;
 
 import android.content.Intent;
 
@@ -7,6 +7,6 @@ import android.content.Intent;
  * ID: hailunz
  * Date: 11/13/15
  **/
-public class HomeViewIntent extends Intent {
+public class TakePhotoIntent extends Intent {
 
 }

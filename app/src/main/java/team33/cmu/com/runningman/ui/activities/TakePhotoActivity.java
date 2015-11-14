@@ -1,4 +1,4 @@
-package team33.cmu.com.runningman;
+package team33.cmu.com.runningman.ui.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -19,6 +19,8 @@ import android.widget.Toast;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+
+import team33.cmu.com.runningman.R;
 
 public class TakePhotoActivity extends AppCompatActivity {
 

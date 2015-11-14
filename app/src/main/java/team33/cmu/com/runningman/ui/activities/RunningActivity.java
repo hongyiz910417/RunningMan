@@ -1,10 +1,12 @@
-package team33.cmu.com.runningman;
+package team33.cmu.com.runningman.ui.activities;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+
+import android.widget.*;
+
 import android.view.View;
-import android.widget.Button;
-import android.content.Intent;
+import android.content.*;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -13,25 +15,27 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class SummaryActivity extends FragmentActivity implements OnMapReadyCallback {
+import team33.cmu.com.runningman.R;
+
+public class RunningActivity  extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_summary);
+        setContentView(R.layout.activity_running);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.summaryMap);
+                .findFragmentById(R.id.runningMap);
         mapFragment.getMapAsync(this);
 
-        Button returnBtn = (Button) findViewById(R.id.summaryReturnBtn);
-        returnBtn.setOnClickListener(new View.OnClickListener() {
+        Button finishBtn = (Button) findViewById(R.id.runningFinishBtn);
+        finishBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SummaryActivity.this, HomeViewActivity.class);
-                SummaryActivity.this.startActivity(intent);
+                Intent intent = new Intent(RunningActivity.this, HomeViewActivity.class);
+                RunningActivity.this.startActivity(intent);
             }
         });
     }

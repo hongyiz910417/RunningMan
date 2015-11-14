@@ -1,13 +1,10 @@
-package team33.cmu.com.runningman;
+package team33.cmu.com.runningman.ui.activities;
 
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
-import android.widget.*;
-
 import android.view.View;
-import android.content.*;
+import android.widget.Button;
+import android.content.Intent;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -16,25 +13,27 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class RunningActivity  extends FragmentActivity implements OnMapReadyCallback {
+import team33.cmu.com.runningman.R;
+
+public class SummaryActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_running);
+        setContentView(R.layout.activity_summary);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.runningMap);
+                .findFragmentById(R.id.summaryMap);
         mapFragment.getMapAsync(this);
 
-        Button finishBtn = (Button) findViewById(R.id.runningFinishBtn);
-        finishBtn.setOnClickListener(new View.OnClickListener() {
+        Button returnBtn = (Button) findViewById(R.id.summaryReturnBtn);
+        returnBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(RunningActivity.this, HomeViewActivity.class);
-                RunningActivity.this.startActivity(intent);
+                Intent intent = new Intent(SummaryActivity.this, HomeViewActivity.class);
+                SummaryActivity.this.startActivity(intent);
             }
         });
     }

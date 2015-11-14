@@ -1,4 +1,4 @@
-package team33.cmu.com.runningman;
+package team33.cmu.com.runningman.ui.activities;
 
 /**
  * Hailun Zhu
@@ -16,6 +16,8 @@ import android.hardware.Camera.PictureCallback;
 import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
+
+import team33.cmu.com.runningman.ui.activities.TakePhotoActivity;
 
 public class PhotoHandler implements PictureCallback {
 

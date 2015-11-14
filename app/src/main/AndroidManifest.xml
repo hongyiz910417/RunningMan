@@ -37,10 +37,10 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
-        <activity android:name=".HomeViewActivity" >
+        <activity android:name=".ui.activities.HomeViewActivity" >
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".ui.activities.LoginActivity"
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustResize|stateVisible" >
             <intent-filter>
@@ -61,18 +61,18 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".SummaryActivity"
+            android:name=".ui.activities.SummaryActivity"
             android:label="@string/title_activity_summary" >
         </activity>
         <activity
-            android:name=".RegisterActivity"
+            android:name=".ui.activities.RegisterActivity"
             android:label="@string/title_activity_register" >
         </activity>
         <activity
-            android:name=".TakePhotoActivity"
+            android:name=".ui.activities.TakePhotoActivity"
             android:label="@string/title_activity_take_photo" >
         </activity>
-        <activity android:name=".RunningActivity" >
+        <activity android:name=".ui.activities.RunningActivity" >
         </activity>
     </application>
 

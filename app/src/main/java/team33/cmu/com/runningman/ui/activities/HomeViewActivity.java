@@ -1,7 +1,5 @@
-package team33.cmu.com.runningman;
+package team33.cmu.com.runningman.ui.activities;
 
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +13,8 @@ import android.content.Intent;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import team33.cmu.com.runningman.R;
 
 public class HomeViewActivity extends AppCompatActivity {
 
