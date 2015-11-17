@@ -1,25 +1,54 @@
 package team33.cmu.com.runningman.ui.activities;
 
-import android.support.v4.app.FragmentActivity;
+import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
-
-import android.widget.*;
-
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
-import android.content.*;
+import android.widget.Button;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
+import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import team33.cmu.com.runningman.R;
+import team33.cmu.com.runningman.utils.GoogleMapUtils;
 
-public class RunningActivity  extends FragmentActivity implements OnMapReadyCallback {
+
+public class RunningActivity  extends FragmentActivity implements OnMapReadyCallback
+        , ConnectionCallbacks, OnConnectionFailedListener, LocationListener {
+    private static final int DEFAULT_ZOOM = 18;
+
+    private static final int UPDATE_INTERVAL = 10000;
+
+    private static final int FASTEST_UPDATE_INTERVAL = 5000;
+
+    private static final int ROUTINE_WIDTH = 6;
+
+    private static final int ROUTINE_COLOR = Color.RED;
 
     private GoogleMap mMap;
+
+    private GoogleApiClient mGoogleApiClient;
+
+    private boolean started = false;
+
+    private Location currentLocation;
+
+    private List<Location> routine = new ArrayList<Location>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,16 +59,58 @@ public class RunningActivity  extends FragmentActivity implements OnMapReadyCall
                 .findFragmentById(R.id.runningMap);
         mapFragment.getMapAsync(this);
 
+        //set up GoogleApiClient
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+        mGoogleApiClient.connect();
+
         Button finishBtn = (Button) findViewById(R.id.runningFinishBtn);
         finishBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(RunningActivity.this, HomeViewActivity.class);
-                RunningActivity.this.startActivity(intent);
+                started = false;
+            }
+        });
+
+        Button startBtn = (Button) findViewById(R.id.runningStartBtn);
+        startBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                started = true;
             }
         });
     }
 
+    protected LocationRequest createLocationRequest(){
+        LocationRequest mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(UPDATE_INTERVAL);
+        mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        return mLocationRequest;
+    }
+
+    protected void updateRoutine(Location location){
+        if(routine.size() == 0){
+            routine.add(location);
+            return;
+        }
+
+        Location prevLocation = routine.get(routine.size() - 1);
+        PolylineOptions rectLine = new PolylineOptions().width(ROUTINE_WIDTH)
+                .color(ROUTINE_COLOR);
+        rectLine.add(new LatLng(prevLocation.getLatitude(), prevLocation.getLongitude()));
+        rectLine.add(new LatLng(location.getLatitude(), location.getLongitude()));
+        mMap.addPolyline(rectLine);
+        routine.add(location);
+    }
+
+    protected void centerCamera(Location location, int zoom){
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
+    }
 
     /**
      * Manipulates the map once available.
@@ -53,10 +124,42 @@ public class RunningActivity  extends FragmentActivity implements OnMapReadyCall
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap = GoogleMapUtils.setMap(mMap);
+        if(mGoogleApiClient != null && mGoogleApiClient.isConnected()){
+            Location location = LocationServices.FusedLocationApi.getLastLocation(
+                    mGoogleApiClient);
+            centerCamera(location, DEFAULT_ZOOM);
+        }
+    }
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    @Override
+    public void onLocationChanged(Location location) {
+        currentLocation = location;
+        centerCamera(currentLocation, DEFAULT_ZOOM);
+        if(started){
+            updateRoutine(currentLocation);
+        }
+    }
+
+    @Override
+    public void onConnected(Bundle connectionHint) {
+        LocationServices.FusedLocationApi.requestLocationUpdates(
+                mGoogleApiClient, createLocationRequest(), this);
+
+        if(mMap != null){
+            Location location = LocationServices.FusedLocationApi.getLastLocation(
+                    mGoogleApiClient);
+            centerCamera(location, DEFAULT_ZOOM);
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int cause){
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult result){
+
     }
 }

@@ -91,16 +91,23 @@
 
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start"
+            android:id="@+id/runningStartBtn" />
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Finish"
             android:id="@+id/runningFinishBtn"
             android:layout_gravity="center"
-            android:layout_marginLeft="140dp" />
+            android:layout_marginLeft="20dp" />
     </LinearLayout>
 
 </LinearLayout>
