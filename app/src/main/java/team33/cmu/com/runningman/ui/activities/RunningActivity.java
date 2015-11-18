@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -21,20 +22,23 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 import team33.cmu.com.runningman.R;
+import team33.cmu.com.runningman.entities.RunningSummaryUpdater;
+import team33.cmu.com.runningman.entities.Summary;
+import team33.cmu.com.runningman.entities.SummaryUpdater;
 import team33.cmu.com.runningman.utils.GoogleMapUtils;
+import team33.cmu.com.runningman.utils.OutputFormat;
 
 
 public class RunningActivity  extends FragmentActivity implements OnMapReadyCallback
         , ConnectionCallbacks, OnConnectionFailedListener, LocationListener {
     private static final int DEFAULT_ZOOM = 18;
 
-    private static final int UPDATE_INTERVAL = 10000;
+    private static final int UPDATE_INTERVAL = 1000;
 
-    private static final int FASTEST_UPDATE_INTERVAL = 5000;
+    private static final int FASTEST_UPDATE_INTERVAL = 1000;
 
     private static final int ROUTINE_WIDTH = 6;
 
@@ -44,11 +48,19 @@ public class RunningActivity  extends FragmentActivity implements OnMapReadyCall
 
     private GoogleApiClient mGoogleApiClient;
 
-    private boolean started = false;
+    private volatile boolean started = false;
+
+    private Thread timerThread;
 
     private Location currentLocation;
 
-    private List<Location> routine = new ArrayList<Location>();
+    private Summary summary;
+
+    private SummaryUpdater summaryUpdater = new RunningSummaryUpdater();
+
+    private Button finishBtn;
+
+    private Button startBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,21 +79,55 @@ public class RunningActivity  extends FragmentActivity implements OnMapReadyCall
                 .build();
         mGoogleApiClient.connect();
 
-        Button finishBtn = (Button) findViewById(R.id.runningFinishBtn);
+        finishBtn = (Button) findViewById(R.id.runningFinishBtn);
+        startBtn = (Button) findViewById(R.id.runningStartBtn);
         finishBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 started = false;
+                startBtn.setEnabled(true);
             }
         });
 
-        Button startBtn = (Button) findViewById(R.id.runningStartBtn);
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                startBtn.setEnabled(false);
                 started = true;
+                mMap.clear();
+                summary = new Summary();
+                summaryUpdater.initSummary(summary
+                        , new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude())
+                        , new Date());
+
+                //thread for counting time
+                timerThread = new Thread() {
+                    private long seconds = 0;
+
+                    @Override
+                    public void run() {
+                        while (started) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    String durationStr = OutputFormat.formatDuration((int) seconds);
+                                    ((TextView) findViewById(R.id.runningDurationValue))
+                                            .setText(durationStr);
+                                }
+                            });
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            seconds++;
+                        }
+                    }
+                };
+                timerThread.start();
             }
         });
+
     }
 
     protected LocationRequest createLocationRequest(){
@@ -92,24 +138,25 @@ public class RunningActivity  extends FragmentActivity implements OnMapReadyCall
         return mLocationRequest;
     }
 
-    protected void updateRoutine(Location location){
-        if(routine.size() == 0){
-            routine.add(location);
-            return;
-        }
+    protected void updateTracking(Location location){
+        summaryUpdater.updateSummary(summary
+                , new LatLng(location.getLatitude(), location.getLongitude()), new Date());
 
-        Location prevLocation = routine.get(routine.size() - 1);
+        updateStatistics();
+
+        LatLng prevLatLng = summary.getRoute().get(summary.getRoute().size() - 2);
         PolylineOptions rectLine = new PolylineOptions().width(ROUTINE_WIDTH)
                 .color(ROUTINE_COLOR);
-        rectLine.add(new LatLng(prevLocation.getLatitude(), prevLocation.getLongitude()));
+        rectLine.add(prevLatLng);
         rectLine.add(new LatLng(location.getLatitude(), location.getLongitude()));
         mMap.addPolyline(rectLine);
-        routine.add(location);
     }
 
-    protected void centerCamera(Location location, int zoom){
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
+    protected void updateStatistics(){
+        String distStr = OutputFormat.formatDistance(summary.getDistance());
+        String paceStr = OutputFormat.formatPace(summary.getPace());
+        ((TextView) findViewById(R.id.runningDistanceValue)).setText(distStr);
+        ((TextView)findViewById(R.id.runningPaceValue)).setText(paceStr);
     }
 
     /**
@@ -125,19 +172,25 @@ public class RunningActivity  extends FragmentActivity implements OnMapReadyCall
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap = GoogleMapUtils.setMap(mMap);
+        mMap.moveCamera(CameraUpdateFactory.zoomTo(DEFAULT_ZOOM));
         if(mGoogleApiClient != null && mGoogleApiClient.isConnected()){
             Location location = LocationServices.FusedLocationApi.getLastLocation(
                     mGoogleApiClient);
-            centerCamera(location, DEFAULT_ZOOM);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                    new LatLng(location.getLatitude(), location.getLongitude())
+                    , DEFAULT_ZOOM));
         }
     }
 
     @Override
     public void onLocationChanged(Location location) {
         currentLocation = location;
-        centerCamera(currentLocation, DEFAULT_ZOOM);
+        if(mMap != null && mGoogleApiClient.isConnected()) {
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(
+                    new LatLng(location.getLatitude(), location.getLongitude())));
+        }
         if(started){
-            updateRoutine(currentLocation);
+            updateTracking(currentLocation);
         }
     }
 
@@ -149,7 +202,9 @@ public class RunningActivity  extends FragmentActivity implements OnMapReadyCall
         if(mMap != null){
             Location location = LocationServices.FusedLocationApi.getLastLocation(
                     mGoogleApiClient);
-            centerCamera(location, DEFAULT_ZOOM);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                    new LatLng(location.getLatitude(), location.getLongitude())
+                    , DEFAULT_ZOOM));
         }
     }
 

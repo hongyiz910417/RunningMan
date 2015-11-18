@@ -2,6 +2,7 @@ package team33.cmu.com.runningman.entities;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -32,6 +33,12 @@ public class Summary {
     }
 
     public Summary(){
+        id = null;
+        route = new ArrayList<LatLng>();
+        name = "";
+        pace = 0.0;
+        distance = 0.0;
+        startDate = new Date();
     }
 
     public Integer getId() {
@@ -88,5 +95,14 @@ public class Summary {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public long getDuration(){
+        long duration = (getEndDate().getTime() - getStartDate().getTime()) / 1000;
+        //to avoid divide by 0
+        if(duration == 0){
+            duration = 1;
+        }
+        return duration;
     }
 }
