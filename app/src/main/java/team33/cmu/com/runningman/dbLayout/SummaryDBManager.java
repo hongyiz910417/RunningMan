@@ -7,7 +7,7 @@ import team33.cmu.com.runningman.entities.Summary;
  */
 public class SummaryDBManager {
     public void insertSummary(Summary summary){
-        // TODO: 11/13/15  
+        System.out.println("summary saved");
     }
     
     public Summary getSummaryByName(String summaryName){

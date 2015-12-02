@@ -19,4 +19,7 @@
     <string name="title_activity_summary">Summary</string>
     <string name="prompt_username">Username</string>
     <string name="error_invalid_Username">Not valid username</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

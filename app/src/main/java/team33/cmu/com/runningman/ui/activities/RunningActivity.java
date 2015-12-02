@@ -25,15 +25,19 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.util.Date;
 
 import team33.cmu.com.runningman.R;
+import team33.cmu.com.runningman.dbLayout.SummaryDBManager;
 import team33.cmu.com.runningman.entities.RunningSummaryUpdater;
 import team33.cmu.com.runningman.entities.Summary;
 import team33.cmu.com.runningman.entities.SummaryUpdater;
+import team33.cmu.com.runningman.ui.dialogs.NewRunNameDialog;
+import team33.cmu.com.runningman.ui.intents.HomeViewIntent;
 import team33.cmu.com.runningman.utils.GoogleMapUtils;
 import team33.cmu.com.runningman.utils.OutputFormat;
 
 
 public class RunningActivity  extends FragmentActivity implements OnMapReadyCallback
-        , ConnectionCallbacks, OnConnectionFailedListener, LocationListener {
+        , ConnectionCallbacks, OnConnectionFailedListener, LocationListener
+        , NewRunNameDialog.NewRunNameListener {
     private static final int DEFAULT_ZOOM = 18;
 
     private static final int UPDATE_INTERVAL = 1000;
@@ -57,6 +61,8 @@ public class RunningActivity  extends FragmentActivity implements OnMapReadyCall
     private Summary summary;
 
     private SummaryUpdater summaryUpdater = new RunningSummaryUpdater();
+
+    private SummaryDBManager summaryDBManager = new SummaryDBManager();
 
     private Button finishBtn;
 
@@ -86,6 +92,8 @@ public class RunningActivity  extends FragmentActivity implements OnMapReadyCall
             public void onClick(View view) {
                 started = false;
                 startBtn.setEnabled(true);
+                NewRunNameDialog namingDialog = new NewRunNameDialog();
+                namingDialog.show(getFragmentManager(), "newRunNameDialog");
             }
         });
 
@@ -157,6 +165,15 @@ public class RunningActivity  extends FragmentActivity implements OnMapReadyCall
         String paceStr = OutputFormat.formatPace(summary.getPace());
         ((TextView) findViewById(R.id.runningDistanceValue)).setText(distStr);
         ((TextView)findViewById(R.id.runningPaceValue)).setText(paceStr);
+    }
+
+    @Override
+    public void onFinishNewRunNameDialog(String name){
+        summary.setName(name);
+        summaryDBManager.insertSummary(summary);
+        HomeViewIntent myIntent = new HomeViewIntent(RunningActivity.this,
+                HomeViewActivity.class);
+        startActivity(myIntent);
     }
 
     /**
