@@ -1,15 +1,14 @@
 package team33.cmu.com.runningman.ui.activities;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-
-import android.content.Intent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,11 +53,10 @@ public class HomeViewActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapter, View v, int position,
                                     long arg3) {
                 String value = adapter.getItemAtPosition(position).toString();
-                Log.i("[jump]",value);
+                Log.i("[jump]", value);
                 Intent intent = new Intent();
                 intent.setClass(HomeViewActivity.this, SummaryActivity.class); //set to Hongyi's activity
-                intent.putExtra("position", position);
-                intent.putExtra("value", value);
+                intent.putExtra("id", "123");
                 startActivity(intent);
             }
         });

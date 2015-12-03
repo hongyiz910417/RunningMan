@@ -1,5 +1,10 @@
 package team33.cmu.com.runningman.dbLayout;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import java.util.ArrayList;
+import java.util.Date;
+
 import team33.cmu.com.runningman.entities.Summary;
 
 /**
@@ -16,8 +21,10 @@ public class SummaryDBManager {
     }
     
     public Summary getSummaryById(Integer summaryId){
-        // TODO: 11/13/15  
-        return null;
+        //stub
+        Summary summary = new Summary(1234, new ArrayList<LatLng>(), "test", 25.3, 17.5, new Date()
+                , new Date());
+        return summary;
     }
     
     public void deleteSummaryByName(String summaryName){

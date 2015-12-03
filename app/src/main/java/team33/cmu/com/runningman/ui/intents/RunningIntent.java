@@ -7,5 +7,5 @@ import android.content.Intent;
  * ID: hailunz
  * Date: 11/13/15
  **/
-public class RunnintIntent extends Intent {
+public class RunningIntent extends Intent {
 }
