@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +12,11 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import team33.cmu.com.runningman.R;
+import team33.cmu.com.runningman.dbLayout.LoginDBManager;
+import team33.cmu.com.runningman.entities.User;
+import android.support.v7.app.AppCompatActivity;
+
+import java.sql.SQLException;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -44,15 +48,26 @@ public class RegisterActivity extends AppCompatActivity {
         }
     };
 
+    private void saveUser(User user){
+        LoginDBManager m = new LoginDBManager();
+        try {
+            m.insertUser(user.getName(),user.getPassword());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     View.OnClickListener signUpButtonClicked = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             if (emailEditText.getText().length() != 0) {
                 AsyncTask<Object, Object, Object> saveAccountTask =
                         new AsyncTask<Object, Object, Object>() {
+                            User user = new User("test","test");
                             @Override
                             protected Object doInBackground(Object... params) {
-                                //saveContact(); // save contact to the database
+                                saveUser(user); // save contact to the database
                                 return null;
                             } // end method doInBackground
 

@@ -10,6 +10,11 @@ public class User {
 
     private User(){}
 
+    public User (String name, String password){
+        this.name = name;
+        this.password = password;
+    }
+
     public static User getUser(){
         if(user == null){
             user = new User();
