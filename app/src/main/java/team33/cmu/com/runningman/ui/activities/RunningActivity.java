@@ -2,6 +2,7 @@ package team33.cmu.com.runningman.ui.activities;
 
 import android.graphics.Color;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
@@ -25,10 +26,12 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.util.Date;
 
 import team33.cmu.com.runningman.R;
+import team33.cmu.com.runningman.dbLayout.RunnerLadderDBMananger;
 import team33.cmu.com.runningman.dbLayout.SummaryDBManager;
 import team33.cmu.com.runningman.entities.RunningSummaryUpdater;
 import team33.cmu.com.runningman.entities.Summary;
 import team33.cmu.com.runningman.entities.SummaryUpdater;
+import team33.cmu.com.runningman.entities.User;
 import team33.cmu.com.runningman.ui.dialogs.NewRunNameDialog;
 import team33.cmu.com.runningman.ui.intents.HomeViewIntent;
 import team33.cmu.com.runningman.utils.GoogleMapUtils;
@@ -62,7 +65,9 @@ public class RunningActivity  extends FragmentActivity implements OnMapReadyCall
 
     private SummaryUpdater summaryUpdater = new RunningSummaryUpdater();
 
-    private SummaryDBManager summaryDBManager = new SummaryDBManager();
+    private SummaryDBManager summaryDBManager = null;
+
+    private RunnerLadderDBMananger runnerLadderDBMananger = null;
 
     private Button finishBtn;
 
@@ -170,10 +175,39 @@ public class RunningActivity  extends FragmentActivity implements OnMapReadyCall
     @Override
     public void onFinishNewRunNameDialog(String name){
         summary.setName(name);
-        summaryDBManager.insertSummary(summary);
-        HomeViewIntent myIntent = new HomeViewIntent(RunningActivity.this,
-                HomeViewActivity.class);
-        startActivity(myIntent);
+
+        AsyncTask<Object, Object, Object> dbTask =
+            new AsyncTask<Object, Object, Object>() {
+                @Override
+                protected void onPreExecute() {
+                    super.onPreExecute();
+                }
+
+                @Override
+                protected Object doInBackground(Object... params) {
+                    summaryDBManager = new SummaryDBManager();
+                    runnerLadderDBMananger = new RunnerLadderDBMananger();
+                    try {
+                        summaryDBManager.insertSummary(summary);
+                        runnerLadderDBMananger.addMilesToUser(User.getUser().getName()
+                                , summary.getDistance());
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    return null;
+                } // end method doInBackground
+
+                @Override
+                protected void onPostExecute(Object result) {
+                    //finish(); // return to the previous Activity
+                    HomeViewIntent myIntent = new HomeViewIntent(RunningActivity.this,
+                            HomeViewActivity.class);
+                    startActivity(myIntent);
+                } // end method onPostExecute//
+            }; // end AsyncTask
+
+        // save the contact to the database using a separate thread
+        dbTask.execute((Object[]) null);
     }
 
     /**
