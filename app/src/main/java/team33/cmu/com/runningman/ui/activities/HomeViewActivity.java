@@ -1,6 +1,7 @@
 package team33.cmu.com.runningman.ui.activities;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -10,16 +11,22 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import team33.cmu.com.runningman.R;
+import team33.cmu.com.runningman.dbLayout.LoginDBManager;
+import team33.cmu.com.runningman.dbLayout.RunnerLadderDBMananger;
 
 public class HomeViewActivity extends AppCompatActivity {
 
     private ListView myRunList;
     private ListView topRunnersList;
+    private ArrayAdapter<String> topRunnersArrayAdapter;
     private String username;
+    private RunnerLadderDBMananger runnerLadderDBMananger;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +81,7 @@ public class HomeViewActivity extends AppCompatActivity {
         // This is the array adapter, it takes the context of the activity as a
         // first parameter, the type of list view as a second parameter and your
         // array as a third parameter.
-        ArrayAdapter<String> topRunnersArrayAdapter = new ArrayAdapter<>(
+        topRunnersArrayAdapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_list_item_1,
                 topRunners);
@@ -85,7 +92,7 @@ public class HomeViewActivity extends AppCompatActivity {
         // Capture button clicks
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                Log.i("[jump]","start Run!");
+                Log.i("[jump]", "start Run!");
 
 //                 Start RunningActivity.class
                 Intent myIntent = new Intent(HomeViewActivity.this,
@@ -94,7 +101,37 @@ public class HomeViewActivity extends AppCompatActivity {
             }
         });
 
+        new RunLadderTask().execute();
     }
 
+
+    private class RunLadderTask extends AsyncTask<String, Integer, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                runnerLadderDBMananger = new RunnerLadderDBMananger();
+                runnerLadderDBMananger.addMilesToUser("tom",12.2);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return "";
+        }
+
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            List<String> topRunners = new LinkedList<>();
+            topRunners.add("MM\t\t8 miles");
+            topRunnersArrayAdapter.clear();
+            topRunnersArrayAdapter.addAll(topRunners);
+            topRunnersArrayAdapter.notifyDataSetChanged();
+        }
+    }
 
 }
