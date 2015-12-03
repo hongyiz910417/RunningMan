@@ -1,23 +1,42 @@
 package team33.cmu.com.runningman.ui.activities;
 
-import android.support.v4.app.FragmentActivity;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Button;
-import android.content.Intent;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
+
+import java.util.List;
 
 import team33.cmu.com.runningman.R;
+import team33.cmu.com.runningman.dbLayout.SummaryDBManager;
+import team33.cmu.com.runningman.entities.Summary;
+import team33.cmu.com.runningman.ui.intents.HomeViewIntent;
+import team33.cmu.com.runningman.utils.GoogleMapUtils;
+import team33.cmu.com.runningman.utils.OutputFormat;
 
 public class SummaryActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+
+    private static final int ROUTINE_WIDTH = 6;
+
+    private static final int ROUTINE_COLOR = Color.RED;
+
+    private static final int DEFAULT_ZOOM = 18;
+
+    private Summary summary;
+
+    private SummaryDBManager summaryDBManager = new SummaryDBManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,33 +47,56 @@ public class SummaryActivity extends FragmentActivity implements OnMapReadyCallb
                 .findFragmentById(R.id.summaryMap);
         mapFragment.getMapAsync(this);
 
+        Intent intent = getIntent();
+        summary = summaryDBManager.getSummaryById(Integer.parseInt(intent.getStringExtra("id")));
+
         Button returnBtn = (Button) findViewById(R.id.summaryReturnBtn);
         returnBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SummaryActivity.this, HomeViewActivity.class);
-                SummaryActivity.this.startActivity(intent);
+                HomeViewIntent intent = new HomeViewIntent(SummaryActivity.this
+                        , HomeViewActivity.class);
+                startActivity(intent);
             }
         });
+
+        if(mMap != null){
+            updateUI(summary);
+        }
+    }
+
+    private void updateUI(Summary summary){
+        //draw route on map
+        PolylineOptions rectLine = new PolylineOptions().width(ROUTINE_WIDTH)
+                .color(ROUTINE_COLOR);
+        List<LatLng> routes = summary.getRoute();
+        for(LatLng latLng : routes) {
+            rectLine.add(latLng);
+        }
+        mMap.addPolyline(rectLine);
+        //focus on the route
+        if(routes.size() > 0){
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(routes.get(0)
+                    , DEFAULT_ZOOM));
+        }
+
+        //update labels
+        String distStr = OutputFormat.formatDistance(summary.getDistance());
+        String paceStr = OutputFormat.formatPace(summary.getPace());
+        String durationStr = OutputFormat.formatDuration((int)summary.getDuration());
+        ((TextView) findViewById(R.id.summaryNameValue)).setText(summary.getName());
+        ((TextView) findViewById(R.id.summaryDistanceValue)).setText(distStr);
+        ((TextView)findViewById(R.id.summaryPaceValue)).setText(paceStr);
+        ((TextView) findViewById(R.id.summaryDurationValue)).setText(durationStr);
     }
 
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        GoogleMapUtils.setMap(mMap);
+        if(summary != null){
+            updateUI(summary);
+        }
     }
 }
