@@ -35,7 +35,7 @@ public class SummaryDBManager extends JDBCAdapter{
         this.connection.commit();
     }
 
-    public List<Summary> getSummariesByUsername(String username){
+    public List<Summary> getSummariesByUsername(String username) throws SQLException{
         return null;
     }
     

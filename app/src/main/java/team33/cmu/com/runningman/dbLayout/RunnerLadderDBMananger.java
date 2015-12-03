@@ -2,6 +2,7 @@ package team33.cmu.com.runningman.dbLayout;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 
 import team33.cmu.com.runningman.entities.LadderEntry;
@@ -36,7 +37,6 @@ public class RunnerLadderDBMananger extends JDBCAdapter{
             }
 
             System.out.println(sql);
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -45,9 +45,26 @@ public class RunnerLadderDBMananger extends JDBCAdapter{
     /**
      * return top k runners according to their total running distance
      * @param k
-     * @return
+     * @return list of ladder entries
      */
-    public List<LadderEntry> getTopUsers(int k){
-        return null;
+    public List<LadderEntry> getTopUsers(int k) throws SQLException{
+        List<LadderEntry> result = new LinkedList<>();
+        try {
+            String sql = "select * from runner_ladder order by distance DESC";
+            System.out.println(sql);
+            ResultSet rs = this.statement.executeQuery(sql);
+            int count = 0;
+            while (rs.next() && count < k) {
+                String username = rs.getString("username");
+                double distance = rs.getDouble("distance");
+                LadderEntry ladderEntry = new LadderEntry(username,distance);
+                result.add(ladderEntry);
+                count++;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 }
