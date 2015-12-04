@@ -11,10 +11,10 @@ public abstract class JDBCAdapter {
     String[]            columnNames = {};
     Vector		rows = new Vector();
     ResultSetMetaData   metaData;
-    String url = "jdbc:mysql://52.23.204.69:3306/runmandb";
+    String url = "jdbc:mysql://192.168.1.106:3306/test";
     String driver = "com.mysql.jdbc.Driver";
-    String user = "team33";
-    String password = "runman666";
+    String user = "hailunz";
+    String password = "hailunz";
 
     public JDBCAdapter() {
         try {

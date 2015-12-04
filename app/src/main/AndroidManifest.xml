@@ -12,6 +12,9 @@
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+    <uses-feature android:name="android.hardware.camera"
+        android:required="true" />
+
     <supports-screens
       android:resizeable="true"
       android:normalScreens="true"
@@ -66,11 +69,18 @@
         </activity>
         <activity
             android:name=".ui.activities.RegisterActivity"
-            android:label="@string/title_activity_register" >
-        </activity>
-        <activity
-            android:name=".ui.activities.TakePhotoActivity"
-            android:label="@string/title_activity_take_photo" >
+            android:windowSoftInputMode="adjustPan"
+            android:label="@string/title_activity_register"
+            android:configChanges="orientation|keyboardHidden"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.EDIT" />
+                <action android:name="android.intent.action.PICK" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="vnd.android.cursor.dir/vnd.google.note" />
+            </intent-filter>
+
         </activity>
         <activity android:name=".ui.activities.RunningActivity" >
         </activity>
