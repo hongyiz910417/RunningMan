@@ -5,7 +5,7 @@ package team33.cmu.com.runningman.local;
  */
 public class AuthenticationService {
     public boolean authenticate(String usrname, String password){
-        // TODO: 11/13/15  
+
         return false;
     }
 }

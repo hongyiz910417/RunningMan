@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import team33.cmu.com.runningman.R;
+import team33.cmu.com.runningman.entities.User;
 
 /**
  * A login screen that offers login via Username/password.
@@ -111,10 +112,6 @@ public class LoginActivity extends Activity{
             mUsernameView.setError(getString(R.string.error_field_required));
             focusView = mUsernameView;
             cancel = true;
-        } else if (!isUsernameValid(Username)) {
-            mUsernameView.setError(getString(R.string.error_invalid_Username));
-            focusView = mUsernameView;
-            cancel = true;
         }
 
         if (cancel) {
@@ -130,10 +127,6 @@ public class LoginActivity extends Activity{
         }
     }
 
-    private boolean isUsernameValid(String Username) {
-        return !Username.contains("@");
-    }
-
     private boolean isPasswordValid(String password) {
         return password.length() > 4;
     }
@@ -143,9 +136,6 @@ public class LoginActivity extends Activity{
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     public void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
@@ -182,17 +172,17 @@ public class LoginActivity extends Activity{
 
         private final String mUsername;
         private final String mPassword;
+        private User user;
 
         UserLoginTask(String Username, String password) {
             mUsername = Username;
             mPassword = password;
+            user = new User(mUsername,mPassword);
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            // TODO: register the new account here.
-            return true;
+            return user.authenticate();
         }
 
         @Override
@@ -203,7 +193,7 @@ public class LoginActivity extends Activity{
             if (success) {
                 finish();
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
+                mPasswordView.setError("The username or password is invalid!");
                 mPasswordView.requestFocus();
             }
         }
