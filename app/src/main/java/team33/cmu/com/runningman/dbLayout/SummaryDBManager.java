@@ -1,9 +1,11 @@
 package team33.cmu.com.runningman.dbLayout;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import com.google.android.gms.maps.model.LatLng;
+
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import team33.cmu.com.runningman.entities.Summary;
@@ -20,29 +22,53 @@ public class SummaryDBManager extends JDBCAdapter{
 
     public void insertSummary(Summary summary) throws SQLException{
         String sql = "insert into run_summary(username, start_date, end_date"
-                + ", distance, pace, route) values (?, ?, ?, ?, ?, ?)";
+                + ", distance, pace, route, summary_name) values (?, ?, ?, ?, ?, ?, ?)";
         this.connection.setAutoCommit(false);
         PreparedStatement ps = this.connection.prepareStatement(sql);
         ps.setString(1, User.getUser().getName());
         ps.setDate(2, new java.sql.Date(summary.getStartDate().getTime()));
         ps.setDate(3, new java.sql.Date(summary.getEndDate().getTime()));
+        System.out.println(summary.getDuration());
         ps.setDouble(4, summary.getDistance());
+        System.out.println(summary.getPace());
         ps.setDouble(5, summary.getPace());
         byte[] bytes = ConvertUtil.LatLngListToBytes(summary.getRoute());
-        InputStream is = new ByteArrayInputStream(bytes);
-        ps.setBlob(6, is);
+        ps.setBytes(6, bytes);
+        ps.setString(7, summary.getName());
         ps.executeUpdate();
         this.connection.commit();
     }
 
-    public List<Summary> getSummariesByUsername(String username){
-        return null;
+    public List<Summary> getSummariesByUsername(String username) throws SQLException{
+        List<Summary> summaries = new ArrayList<Summary>();
+        String sql = "SELECT * FROM run_summary where username = '" + username + "'";
+        ResultSet rs = statement.executeQuery(sql);
+        if(rs.next()){
+            List<LatLng> latLngList = ConvertUtil.BytesToLatLngList(rs.getBytes("route"));
+
+            Summary summary = new Summary(rs.getInt("summary_id"), latLngList, rs.getString("summary_name")
+                    , rs.getDouble("pace"), rs.getDouble("distance")
+                    , new java.util.Date(rs.getDate("start_date").getTime())
+                    , new java.util.Date(rs.getDate("end_date").getTime()));
+            summaries.add(summary);
+        }
+        rs.close();
+        return summaries;
     }
     
-    public Summary getSummaryById(Integer summaryId){
-        //stub
-//        Summary summary = new Summary(1234, new ArrayList<LatLng>(), "test", 25.3, 17.5, new Date()
-//                , new Date());
-        return null;
+    public Summary getSummaryById(Integer summaryId) throws SQLException{
+        String sql = "SELECT * FROM run_summary where summary_id = " + summaryId;
+        ResultSet rs = statement.executeQuery(sql);
+        Summary summary = null;
+        if(rs.next()){
+            List<LatLng> latLngList = ConvertUtil.BytesToLatLngList(rs.getBytes("route"));
+
+            summary = new Summary(rs.getInt("summary_id"), latLngList, rs.getString("summary_name")
+                    , rs.getDouble("pace"), rs.getDouble("distance")
+                    , new java.util.Date(rs.getDate("start_date").getTime())
+                    , new java.util.Date(rs.getDate("end_date").getTime()));
+        }
+        rs.close();
+        return summary;
     }
 }

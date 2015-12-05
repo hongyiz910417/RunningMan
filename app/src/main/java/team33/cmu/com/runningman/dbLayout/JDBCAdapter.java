@@ -11,7 +11,7 @@ public abstract class JDBCAdapter {
     String[]            columnNames = {};
     Vector		rows = new Vector();
     ResultSetMetaData   metaData;
-    String url = "jdbc:mysql://52.23.204.69:3306/runmandb";
+    String url = "jdbc:mysql://54.84.133.137:3306/runmandb";
     String driver = "com.mysql.jdbc.Driver";
     String user = "team33";
     String password = "runman666";

@@ -5,9 +5,9 @@ package team33.cmu.com.runningman.entities;
  */
 public class LadderEntry {
     private String userName;
-    private String distance;
+    private double distance;
 
-    public LadderEntry(String userName, String distance) {
+    public LadderEntry(String userName, double distance) {
         this.userName = userName;
         this.distance = distance;
     }
@@ -16,7 +16,7 @@ public class LadderEntry {
         return userName;
     }
 
-    public String getDistance() {
+    public double getDistance() {
         return distance;
     }
 }

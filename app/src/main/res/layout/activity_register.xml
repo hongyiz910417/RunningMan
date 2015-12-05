@@ -13,12 +13,15 @@
             android:layout_height="wrap_content" android:orientation="vertical">
 
             <EditText android:id="@+id/email_sign_up" android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:hint="@string/prompt_email"
+                android:layout_height="wrap_content" android:hint="Username"
                 android:inputType="textEmailAddress" android:maxLines="1"
                 android:singleLine="true" />
 
-            <EditText android:id="@+id/password_sign_up" android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:hint="@string/prompt_password"
+            <EditText android:id="@+id/password_sign_up"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/prompt_password"
+                android:inputType="textPassword"
                 android:maxLines="1" android:singleLine="true" />
 
             <EditText
@@ -40,26 +43,40 @@
                 android:textStyle="bold"
                 android:layout_gravity="center_horizontal" />
 
+            <Button
+                style="?android:textAppearanceSmall"
+                android:id="@+id/take_photo_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Take Photo"
+                android:textStyle="bold"
+                android:layout_gravity="center_horizontal"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true" />
+
+            <Button
+                style="?android:textAppearanceSmall"
+                android:id="@+id/upload_photo_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Upload Photo"
+                android:textStyle="bold"
+                android:layout_gravity="center_horizontal"
+                android:layout_alignTop="@+id/imageView"
+                android:layout_alignParentStart="true" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:id="@+id/imageView"
+                android:layout_below="@+id/take_photo_button"
+                android:layout_alignParentStart="true" />
         </LinearLayout>
     </ScrollView>
 
-    <Button
-        style="?android:textAppearanceSmall"
-        android:id="@+id/take_photo_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/action_user_photo"
-        android:textStyle="bold"
-        android:layout_gravity="center_horizontal"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true" />
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/imageView"
-        android:layout_below="@+id/take_photo_button"
-        android:layout_alignParentStart="true" />
+
+
 
 
 </RelativeLayout>
