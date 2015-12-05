@@ -2,6 +2,7 @@ package team33.cmu.com.runningman.ui.activities;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
@@ -34,9 +35,7 @@ public class SummaryActivity extends FragmentActivity implements OnMapReadyCallb
 
     private static final int DEFAULT_ZOOM = 18;
 
-    private Summary summary;
-
-    private SummaryDBManager summaryDBManager = new SummaryDBManager();
+    private Summary summary = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +45,6 @@ public class SummaryActivity extends FragmentActivity implements OnMapReadyCallb
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.summaryMap);
         mapFragment.getMapAsync(this);
-
-        Intent intent = getIntent();
-        summary = summaryDBManager.getSummaryById(Integer.parseInt(intent.getStringExtra("id")));
 
         Button returnBtn = (Button) findViewById(R.id.summaryReturnBtn);
         returnBtn.setOnClickListener(new View.OnClickListener() {
@@ -60,9 +56,41 @@ public class SummaryActivity extends FragmentActivity implements OnMapReadyCallb
             }
         });
 
-        if(mMap != null){
-            updateUI(summary);
-        }
+        final Intent intent = getIntent();
+
+        AsyncTask<Object, Object, Object> dbTask =
+                new AsyncTask<Object, Object, Object>() {
+                    @Override
+                    protected void onPreExecute() {
+                        super.onPreExecute();
+                    }
+
+                    @Override
+                    protected Object doInBackground(Object... params) {
+                        SummaryDBManager summaryDBManager = new SummaryDBManager();
+                        try {
+                            summary = summaryDBManager.getSummaryById(intent.getIntExtra("id", -1));
+                        } catch (Exception e){
+                            e.printStackTrace();
+                        }
+                        if(mMap != null){
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    updateUI(summary);
+                                }
+                            });
+                        }
+                        return null;
+                    } // end method doInBackground
+
+                    @Override
+                    protected void onPostExecute(Object result) {
+                    } // end method onPostExecute//
+                }; // end AsyncTask
+
+        // save the contact to the database using a separate thread
+        dbTask.execute((Object[]) null);
     }
 
     private void updateUI(Summary summary){

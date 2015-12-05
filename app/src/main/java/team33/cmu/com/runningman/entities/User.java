@@ -12,7 +12,7 @@ import java.security.NoSuchAlgorithmException;
  */
 public class User {
     private static User user;
-    private String name;
+    private String name = "stub";
     private String password;
     private byte[] photo;
 

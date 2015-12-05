@@ -188,6 +188,7 @@ public class RunningActivity  extends FragmentActivity implements OnMapReadyCall
                     summaryDBManager = new SummaryDBManager();
                     runnerLadderDBMananger = new RunnerLadderDBMananger();
                     try {
+                        System.out.println("before inserting: " + summary.getPace());
                         summaryDBManager.insertSummary(summary);
                         runnerLadderDBMananger.addMilesToUser(User.getUser().getName()
                                 , summary.getDistance());

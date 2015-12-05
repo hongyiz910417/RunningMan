@@ -21,6 +21,7 @@ import team33.cmu.com.runningman.dbLayout.RunnerLadderDBMananger;
 import team33.cmu.com.runningman.dbLayout.SummaryDBManager;
 import team33.cmu.com.runningman.entities.LadderEntry;
 import team33.cmu.com.runningman.entities.Summary;
+import team33.cmu.com.runningman.entities.User;
 
 public class HomeViewActivity extends AppCompatActivity {
 
@@ -30,7 +31,7 @@ public class HomeViewActivity extends AppCompatActivity {
     private ArrayAdapter<String> myRunArrayAdapter;
     private List<LadderEntry> ladderEntries;
     private List<Summary> summaries;
-    private String username = "tom";
+    private String username = User.getUser().getName();
     private RunnerLadderDBMananger runnerLadderDBMananger;
     private SummaryDBManager summaryDBManager;
     private static int RUN_LADDER_NUM = 3;
@@ -93,7 +94,7 @@ public class HomeViewActivity extends AppCompatActivity {
             }
         });
 
-        //new LoadSummaryTask().execute();
+        new LoadSummaryTask().execute();
         new RunLadderTask().execute();
     }
 
