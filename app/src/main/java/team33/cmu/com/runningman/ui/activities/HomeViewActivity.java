@@ -22,7 +22,11 @@ import team33.cmu.com.runningman.dbLayout.SummaryDBManager;
 import team33.cmu.com.runningman.entities.LadderEntry;
 import team33.cmu.com.runningman.entities.Summary;
 import team33.cmu.com.runningman.entities.User;
+<<<<<<< HEAD
 import team33.cmu.com.runningman.utils.OutputFormat;
+=======
+import team33.cmu.com.runningman.local.NotificationService;
+>>>>>>> dev
 
 /**
  * Team33
@@ -89,6 +93,7 @@ public class HomeViewActivity extends AppCompatActivity {
         topRunnersList.setAdapter(topRunnersArrayAdapter);
 
         Button button = (Button) findViewById(R.id.startRun);
+        Button refreshButton = (Button) findViewById(R.id.refreshButton);
         // Capture button clicks
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
@@ -96,6 +101,16 @@ public class HomeViewActivity extends AppCompatActivity {
                 Intent myIntent = new Intent(HomeViewActivity.this,
                         RunningActivity.class);
                 startActivity(myIntent);
+            }
+        });
+
+        refreshButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                System.out.println("refresh");
+                startService(new Intent(HomeViewActivity.this, NotificationService.class));
+                // function
+                stopService(new Intent(HomeViewActivity.this, NotificationService.class));
             }
         });
 
