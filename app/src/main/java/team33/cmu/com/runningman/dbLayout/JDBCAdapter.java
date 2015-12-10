@@ -13,8 +13,8 @@ public abstract class JDBCAdapter {
     ResultSetMetaData   metaData;
     String url = "jdbc:mysql://54.84.133.137:3306/runmandb";
     String driver = "com.mysql.jdbc.Driver";
-    String user = "hailunz";
-    String password = "hailunz";
+    String user = "team33";
+    String password = "runman666";
 
     public JDBCAdapter() {
         try {

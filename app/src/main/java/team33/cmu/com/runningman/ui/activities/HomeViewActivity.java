@@ -43,7 +43,6 @@ public class HomeViewActivity extends AppCompatActivity {
         myRunList = (ListView) findViewById(R.id.myRunsList);
         List<String> myRuns = new ArrayList<>();
 
-        //TODO: get user name from Hailun's intent
 
         // This is the array adapter, it takes the context of the activity as a
         // first parameter, the type of list view as a second parameter and your
