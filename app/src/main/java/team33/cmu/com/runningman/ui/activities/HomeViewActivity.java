@@ -22,11 +22,8 @@ import team33.cmu.com.runningman.dbLayout.SummaryDBManager;
 import team33.cmu.com.runningman.entities.LadderEntry;
 import team33.cmu.com.runningman.entities.Summary;
 import team33.cmu.com.runningman.entities.User;
-<<<<<<< HEAD
 import team33.cmu.com.runningman.utils.OutputFormat;
-=======
 import team33.cmu.com.runningman.local.NotificationService;
->>>>>>> dev
 
 /**
  * Team33
@@ -109,7 +106,7 @@ public class HomeViewActivity extends AppCompatActivity {
             public void onClick(View view) {
                 System.out.println("refresh");
                 startService(new Intent(HomeViewActivity.this, NotificationService.class));
-                // function
+                new RunLadderTask().execute();
                 stopService(new Intent(HomeViewActivity.this, NotificationService.class));
             }
         });
