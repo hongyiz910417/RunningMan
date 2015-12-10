@@ -10,8 +10,10 @@ import java.security.NoSuchAlgorithmException;
 import team33.cmu.com.runningman.dbLayout.LoginDBManager;
 
 /**
- * Created by d on 11/13/15.
- */
+ * Team33
+ * RunningMan
+ * Date: 12/10/15
+ **/
 public class User {
     private static User user;
     private String name = "stub";

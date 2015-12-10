@@ -21,6 +21,12 @@ import team33.cmu.com.runningman.R;
 import team33.cmu.com.runningman.entities.User;
 
 /**
+ * Team33
+ * RunningMan
+ * Date: 12/10/15
+ **/
+
+/**
  * A login screen that offers login via Username/password.
  */
 public class LoginActivity extends Activity{

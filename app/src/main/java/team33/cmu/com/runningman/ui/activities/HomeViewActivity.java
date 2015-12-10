@@ -22,7 +22,13 @@ import team33.cmu.com.runningman.dbLayout.SummaryDBManager;
 import team33.cmu.com.runningman.entities.LadderEntry;
 import team33.cmu.com.runningman.entities.Summary;
 import team33.cmu.com.runningman.entities.User;
+import team33.cmu.com.runningman.utils.OutputFormat;
 
+/**
+ * Team33
+ * RunningMan
+ * Date: 12/10/15
+ **/
 public class HomeViewActivity extends AppCompatActivity {
 
     private ListView myRunList;
@@ -121,7 +127,7 @@ public class HomeViewActivity extends AppCompatActivity {
             super.onPostExecute(result);
             List<String> topRunners = new LinkedList<>();
             for (LadderEntry ladderEntry : ladderEntries) {
-                topRunners.add(ladderEntry.getUserName() + "\t\t" + ladderEntry.getDistance() + " miles");
+                topRunners.add(ladderEntry.getUserName() + "\t\t" + OutputFormat.formatDistance(ladderEntry.getDistance()));
             }
 
             topRunnersArrayAdapter.clear();
@@ -153,7 +159,7 @@ public class HomeViewActivity extends AppCompatActivity {
             super.onPostExecute(result);
             List<String> myRuns = new LinkedList<>();
             for (Summary summary : summaries) {
-                myRuns.add(summary.getName() + "\t" + summary.getStartDate() + "\t"+ summary.getDistance() + " miles");
+                myRuns.add(summary.getName() + "\t" + summary.getStartDate() + "\t"+ OutputFormat.formatDistance(summary.getDistance()));
             }
 
             myRunArrayAdapter.clear();

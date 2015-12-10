@@ -8,8 +8,11 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Created by d on 11/16/15.
- */
+ * Team33
+ * RunningMan
+ * Date: 12/10/15
+ **/
+
 public class RunningSummaryUpdater implements SummaryUpdater {
     @Override
     public void updateSummary(Summary summary, LatLng newLocation, Date curTime) {

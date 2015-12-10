@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import team33.cmu.com.runningman.entities.User;
 
 /**
- * Hailun Zhu
- * ID: hailunz
+ * Team33
+ * RunningMan
  * Date: 12/10/15
  **/
 public class LoginDBManager extends JDBCAdapter {

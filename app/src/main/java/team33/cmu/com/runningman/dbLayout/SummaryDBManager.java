@@ -11,10 +11,11 @@ import java.util.List;
 import team33.cmu.com.runningman.entities.Summary;
 import team33.cmu.com.runningman.entities.User;
 import team33.cmu.com.runningman.utils.ConvertUtil;
-
 /**
- * Created by d on 11/13/15.
- */
+ * Team33
+ * RunningMan
+ * Date: 12/10/15
+ **/
 public class SummaryDBManager extends JDBCAdapter{
     public SummaryDBManager(){
         super();
