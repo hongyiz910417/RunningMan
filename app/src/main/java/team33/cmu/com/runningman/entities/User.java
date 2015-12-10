@@ -7,9 +7,13 @@ import java.io.ByteArrayOutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import team33.cmu.com.runningman.dbLayout.LoginDBManager;
+
 /**
- * Created by d on 11/13/15.
- */
+ * Team33
+ * RunningMan
+ * Date: 12/10/15
+ **/
 public class User {
     private static User user;
     private String name = "stub";
@@ -75,9 +79,10 @@ public class User {
     }
 
     public boolean authenticate(){
-
-
-        return false;
+        LoginDBManager manager = new LoginDBManager();
+        if (user.getName()==null || user.getPassword()==null)
+            return false;
+        return manager.login(this);
     }
 
     private String hashedPassword(String password){

@@ -8,9 +8,10 @@ import java.util.List;
 import team33.cmu.com.runningman.entities.LadderEntry;
 
 /**
- * @author Qinyu Tong:<qtong@andrew.cmu.edu>
- * @since Wed Dec  2 21:19:48 EST 2015
- * */
+ * Team33
+ * RunningMan
+ * Date: 12/10/15
+ **/
 public class RunnerLadderDBMananger extends JDBCAdapter{
     public RunnerLadderDBMananger() {
         super();

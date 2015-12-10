@@ -5,8 +5,10 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.Date;
 
 /**
- * Created by d on 11/13/15.
- */
+ * Team33
+ * RunningMan
+ * Date: 12/10/15
+ **/
 public interface SummaryUpdater {
     /**
      * update the summary(including pace, duration) by adding the newLocation along with the date

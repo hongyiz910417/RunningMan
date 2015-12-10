@@ -4,8 +4,10 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
- * Created by d on 11/13/15.
- */
+ * Team33
+ * RunningMan
+ * Date: 12/10/15
+ **/
 public class RegisterDBManager extends JDBCAdapter{
     public RegisterDBManager() {
         super();

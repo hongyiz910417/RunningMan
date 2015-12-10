@@ -3,7 +3,11 @@ package team33.cmu.com.runningman.dbLayout;
 import java.util.Vector;
 import java.sql.*;
 
-
+/**
+ * Team33
+ * RunningMan
+ * Date: 12/10/15
+ **/
 public abstract class JDBCAdapter {
     Connection          connection;
     Statement           statement;
@@ -13,8 +17,8 @@ public abstract class JDBCAdapter {
     ResultSetMetaData   metaData;
     String url = "jdbc:mysql://54.84.133.137:3306/runmandb";
     String driver = "com.mysql.jdbc.Driver";
-    String user = "hailunz";
-    String password = "hailunz";
+    String user = "team33";
+    String password = "runman666";
 
     public JDBCAdapter() {
         try {

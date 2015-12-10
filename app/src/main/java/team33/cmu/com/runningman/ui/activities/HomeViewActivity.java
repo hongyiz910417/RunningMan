@@ -24,6 +24,11 @@ import team33.cmu.com.runningman.entities.Summary;
 import team33.cmu.com.runningman.entities.User;
 import team33.cmu.com.runningman.utils.OutputFormat;
 
+/**
+ * Team33
+ * RunningMan
+ * Date: 12/10/15
+ **/
 public class HomeViewActivity extends AppCompatActivity {
 
     private ListView myRunList;
@@ -43,6 +48,7 @@ public class HomeViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home_view);
         myRunList = (ListView) findViewById(R.id.myRunsList);
         List<String> myRuns = new ArrayList<>();
+
 
         // This is the array adapter, it takes the context of the activity as a
         // first parameter, the type of list view as a second parameter and your

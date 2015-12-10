@@ -9,7 +9,10 @@ import java.util.List;
 
 
 /**
- * Created by d on 11/13/15.
+ * Team33
+ * RunningMan
+ * Date: 12/10/15
+ *
  * summary entities
  */
 public class Summary {
