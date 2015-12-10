@@ -30,7 +30,16 @@
         android:textSize="30dp"
         android:layout_gravity="center_horizontal"
         android:text="Top Runners"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:id="@+id/TopRunner" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="refresh"
+        android:id="@+id/refreshButton"
+        android:layout_gravity="right" />
 
     <ListView
         android:layout_width="match_parent"
