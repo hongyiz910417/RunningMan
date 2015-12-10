@@ -56,9 +56,6 @@ public class LoginActivity extends Activity{
             @Override
             public void onClick(View view) {
                 attemptLogin();
-                Intent intent = new Intent(LoginActivity.this, HomeViewActivity.class);
-                startActivity(intent);
-                finish();
             }
         });
 
@@ -128,7 +125,7 @@ public class LoginActivity extends Activity{
     }
 
     private boolean isPasswordValid(String password) {
-        return password.length() > 4;
+        return password.length() >= 4;
     }
 
     /**
@@ -177,12 +174,18 @@ public class LoginActivity extends Activity{
         UserLoginTask(String Username, String password) {
             mUsername = Username;
             mPassword = password;
-            user = new User(mUsername,mPassword);
+            user = User.getUser();
+            user.setName(mUsername);
+            user.setPassword(mPassword);
+            System.out.println("user login");
+            System.out.println(user.getName());
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            return user.authenticate();
+            boolean flag = user.authenticate();
+            System.out.println(flag);
+            return flag;
         }
 
         @Override
@@ -191,8 +194,11 @@ public class LoginActivity extends Activity{
             showProgress(false);
 
             if (success) {
+                Intent intent = new Intent(LoginActivity.this, HomeViewActivity.class);
+                startActivity(intent);
                 finish();
             } else {
+                System.out.println("The username or password is invalid!");
                 mPasswordView.setError("The username or password is invalid!");
                 mPasswordView.requestFocus();
             }
