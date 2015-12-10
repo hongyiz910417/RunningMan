@@ -145,6 +145,13 @@ public class RunningActivity  extends FragmentActivity implements OnMapReadyCall
             }
         });
 
+
+        ((TextView) findViewById(R.id.runningDurationValue))
+                .setText("--");
+        ((TextView) findViewById(R.id.runningPaceValue))
+                .setText("--");
+        ((TextView) findViewById(R.id.runningDistanceValue))
+                .setText("--");
     }
 
     protected LocationRequest createLocationRequest(){
