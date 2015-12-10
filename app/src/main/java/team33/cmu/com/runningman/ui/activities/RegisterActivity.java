@@ -28,6 +28,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
 
+/**
+ * Team33
+ * RunningMan
+ * Date: 12/10/15
+ **/
 public class RegisterActivity extends AppCompatActivity {
 
     private static final int CAMERA_REQUEST = 1888;

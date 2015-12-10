@@ -3,7 +3,11 @@ package team33.cmu.com.runningman.dbLayout;
 import java.util.Vector;
 import java.sql.*;
 
-
+/**
+ * Team33
+ * RunningMan
+ * Date: 12/10/15
+ **/
 public abstract class JDBCAdapter {
     Connection          connection;
     Statement           statement;

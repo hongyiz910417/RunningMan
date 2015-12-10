@@ -1,8 +1,10 @@
 package team33.cmu.com.runningman.entities;
 
 /**
- * Created by d on 11/13/15.
- */
+ * Team33
+ * RunningMan
+ * Date: 12/10/15
+ **/
 public class LadderEntry {
     private String userName;
     private double distance;

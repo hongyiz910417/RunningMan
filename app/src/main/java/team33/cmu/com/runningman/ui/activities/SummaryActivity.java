@@ -25,6 +25,12 @@ import team33.cmu.com.runningman.ui.intents.HomeViewIntent;
 import team33.cmu.com.runningman.utils.GoogleMapUtils;
 import team33.cmu.com.runningman.utils.OutputFormat;
 
+/**
+ * Team33
+ * RunningMan
+ * Date: 12/10/15
+ **/
+
 public class SummaryActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;

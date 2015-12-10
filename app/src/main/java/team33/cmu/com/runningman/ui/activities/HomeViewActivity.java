@@ -22,7 +22,11 @@ import team33.cmu.com.runningman.dbLayout.SummaryDBManager;
 import team33.cmu.com.runningman.entities.LadderEntry;
 import team33.cmu.com.runningman.entities.Summary;
 import team33.cmu.com.runningman.entities.User;
-
+/**
+ * Team33
+ * RunningMan
+ * Date: 12/10/15
+ **/
 public class HomeViewActivity extends AppCompatActivity {
 
     private ListView myRunList;
