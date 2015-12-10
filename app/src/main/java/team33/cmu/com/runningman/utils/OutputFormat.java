@@ -2,6 +2,8 @@ package team33.cmu.com.runningman.utils;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by d on 11/18/15.
@@ -31,5 +33,10 @@ public class OutputFormat {
         double distInKm = distance / 1000d;
         String str = formatter.format(distInKm);
         return str + " km";
+    }
+
+    public static String formatDate(Date date){
+        SimpleDateFormat dt1 = new SimpleDateFormat("MM/dd/yyyy");
+        return dt1.format(date);
     }
 }

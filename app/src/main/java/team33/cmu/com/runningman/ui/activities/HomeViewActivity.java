@@ -159,7 +159,8 @@ public class HomeViewActivity extends AppCompatActivity {
             super.onPostExecute(result);
             List<String> myRuns = new LinkedList<>();
             for (Summary summary : summaries) {
-                myRuns.add(summary.getName() + "\t" + summary.getStartDate() + "\t"+ OutputFormat.formatDistance(summary.getDistance()));
+                myRuns.add(summary.getName() + "\t" + OutputFormat.formatDate(summary.getStartDate())
+                        + "\t"+ OutputFormat.formatDistance(summary.getDistance()));
             }
 
             myRunArrayAdapter.clear();
