@@ -43,7 +43,7 @@ public class SummaryDBManager extends JDBCAdapter{
         List<Summary> summaries = new ArrayList<Summary>();
         String sql = "SELECT * FROM run_summary where username = '" + username + "'";
         ResultSet rs = statement.executeQuery(sql);
-        if(rs.next()){
+        while(rs.next()){
             List<LatLng> latLngList = ConvertUtil.BytesToLatLngList(rs.getBytes("route"));
 
             Summary summary = new Summary(rs.getInt("summary_id"), latLngList, rs.getString("summary_name")
@@ -53,6 +53,7 @@ public class SummaryDBManager extends JDBCAdapter{
             summaries.add(summary);
         }
         rs.close();
+        System.out.println("summary size: " + summaries.size());
         return summaries;
     }
     
