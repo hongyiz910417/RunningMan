@@ -11,7 +11,6 @@ public class RunnerLadder {
     private List<LadderEntry> entries;
 
     public List<LadderEntry> getEntries(){
-        // TODO: 11/13/15
         return entries;
     }
 }

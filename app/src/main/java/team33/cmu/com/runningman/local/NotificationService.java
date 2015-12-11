@@ -1,11 +1,10 @@
 package team33.cmu.com.runningman.local;
 
 /**
- * Hailun Zhu
- * ID: hailunz
+ * Team33
+ * RunningMan
  * Date: 12/10/15
  **/
-// BackgroundService.java
 
 import android.app.Notification;
 import android.app.NotificationManager;

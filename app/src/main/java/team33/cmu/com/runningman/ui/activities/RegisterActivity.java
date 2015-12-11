@@ -95,15 +95,11 @@ public class RegisterActivity extends AppCompatActivity {
         }
     };
 
-    private void saveUser(User user){
+    private boolean saveUser(User user){
         RegisterDBManager m = new RegisterDBManager();
-        try {
-            m.insertUser(user.getName(),user.getPassword(), user.getPhoto());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
+        return m.insertUser(user.getName(),user.getPassword(), user.getPhoto());
     }
+
     public void setImage(ImageView image, String url){
         try {
             // get input stream
@@ -126,37 +122,50 @@ public class RegisterActivity extends AppCompatActivity {
             if (emailEditText.getText().length() != 0 && passwordEditText.getText().length()>=4 &&
                     passwordConfirmEditText.getText().length() == passwordEditText.getText().length() &&
                     passwordConfirmEditText.getText().toString().equals(passwordEditText.getText().toString())) {
-                AsyncTask<Object, Object, Object> saveAccountTask =
-                        new AsyncTask<Object, Object, Object>() {
+                AsyncTask<Object, Boolean, Boolean> saveAccountTask =
+                        new AsyncTask<Object, Boolean, Boolean>() {
 
                             String username = emailEditText.getText().toString();
                             String password = passwordEditText.getText().toString();
                             Bitmap photo = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
                             User user = new User(username, password,Bitmap.createScaledBitmap(photo, 50, 50, false));
                             @Override
-                            protected Object doInBackground(Object... params) {
-                                saveUser(user); // save contact to the database
-                                return null;
+                             protected Boolean doInBackground(Object... params) {
+                               Boolean flag= (Boolean)saveUser(user); // save contact to the database
+                                return flag;
                             } // end method doInBackground
 
                             @Override
-                            protected void onPostExecute(Object result) {
-                                AlertDialog.Builder builder =
-                                        new AlertDialog.Builder(RegisterActivity.this);
+                            protected void onPostExecute(Boolean result) {
+                                if (result){
+                                    AlertDialog.Builder builder =
+                                            new AlertDialog.Builder(RegisterActivity.this);
 
-                                // set dialog title & message, and provide Button to dismiss
-                                builder.setTitle(R.string.success_register);
-                                builder.setMessage("Successful register user.");
-                                builder.setPositiveButton(R.string.successButton, new DialogInterface.OnClickListener() { // define the 'Cancel' button
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        //Either of the following two lines should work.
-                                        dialog.cancel();
-                                        finish();
-                                    }
-                                });
-                                builder.show(); // display the Dialog
-                            } // end method onPostExecute
-                        }; // end AsyncTask
+                                    // set dialog title & message, and provide Button to dismiss
+                                    builder.setTitle(R.string.success_register);
+                                    builder.setMessage("Successful register user.");
+                                    builder.setPositiveButton(R.string.successButton, new DialogInterface.OnClickListener() { // define the 'Cancel' button
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            //Either of the following two lines should work.
+                                            dialog.cancel();
+                                            finish();
+                                        }
+                                    });
+                                    builder.show(); // display the Dialog
+                                }
+                                else{
+                                    AlertDialog.Builder builder =
+                                            new AlertDialog.Builder(RegisterActivity.this);
+
+                                    // set dialog title & message, and provide Button to dismiss
+                                    builder.setTitle(R.string.fail_register);
+                                    builder.setMessage("Try another username.");
+                                    builder.setPositiveButton(R.string.errorButton, null);
+                                    builder.show(); // display the Dialog
+                                }
+
+                            }
+                        };
 
                 // save the contact to the database using a separate thread
                 saveAccountTask.execute((Object[]) null);

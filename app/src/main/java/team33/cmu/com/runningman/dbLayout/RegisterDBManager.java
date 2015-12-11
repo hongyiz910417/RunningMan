@@ -1,6 +1,7 @@
 package team33.cmu.com.runningman.dbLayout;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -13,18 +14,26 @@ public class RegisterDBManager extends JDBCAdapter{
         super();
     }
 
-    public void insertUser(String username, String password, byte[] photo) throws SQLException {
+    public boolean insertUser(String username, String password, byte[] photo)  {
         try {
-            System.out.println(photo.length);
-            System.out.println(password.length());
-            PreparedStatement updateemp = connection.prepareStatement
-                    ("insert into user_info values(?,?,?)");
-            updateemp.setString(1,username);
-            updateemp.setString(2, password);
-            updateemp.setBytes(3, photo);
-            updateemp.executeUpdate();
+            String query = "select * from user_info where username ='"+ username +"';";
+            ResultSet rs = this.statement.executeQuery(query);
+            if (rs.next()) {
+                return false;
+            }else{
+                System.out.println(photo.length);
+                System.out.println(password.length());
+                PreparedStatement updateemp = connection.prepareStatement
+                        ("insert into user_info values(?,?,?)");
+                updateemp.setString(1,username);
+                updateemp.setString(2, password);
+                updateemp.setBytes(3, photo);
+                updateemp.executeUpdate();
+                return true;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 }
